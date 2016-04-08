@@ -45,3 +45,4 @@ https://github.com/gogits/gogs
 
 - Don't force to use Git Server and MariaDB (PostgreSQL? Gogs ARM version haven't Sqlite/TiDB)
 - Support to archs (and DBs)
+- Don't use **root** user and create and use **gogs** user, if possible
