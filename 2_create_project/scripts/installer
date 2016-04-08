@@ -12,6 +12,7 @@ SERVICETOOL="/usr/syno/bin/servicetool"
 FWPORTS="/var/packages/${DNAME}/scripts/${PACKAGE}.sc"
 
 FILE_CREATE_LOG="${INSTALL_DIR}/gogs/wizard_create_log"
+LOG_FILE="/var/log/gogs.log"
 
 preinst ()
 {
@@ -51,6 +52,9 @@ postuninst ()
 {
     # Remove link
     rm -f ${INSTALL_DIR}
+
+    # remove log file
+    rm -f ${LOG_FILE}
 
     exit 0
 }
