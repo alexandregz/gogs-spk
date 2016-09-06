@@ -26,6 +26,15 @@ Download the binary from https://gogs.io/docs/installation/install_from_binary, 
 ```$ sh create_spk.sh```
 
 
+## Compiled from source
+
+Suggested by [hirakujira](https://github.com/hirakujira)
+
+```
+GOOS=linux GOARCH=arm GOARM=7 go get -u github.com/gogits/gogs
+```
+
+
 ## Screenshots
 
 ![Install](screenshots/install2.png)
