@@ -14,8 +14,13 @@ FWPORTS="/var/packages/${DNAME}/scripts/${PACKAGE}.sc"
 FILE_CREATE_LOG="${INSTALL_DIR}/gogs/wizard_create_log"
 LOG_FILE="/var/log/gogs.log"
 
+SETTING_FILE="${INSTALL_DIR}/gogs/custom/conf/app.ini"
+
 preinst ()
 {
+    if [[ -f "${SETTING_FILE}" ]]; then
+        cp "${SETTING_FILE}" /tmp/gogs_app.ini
+    fi
     exit 0
 }
 
@@ -31,6 +36,11 @@ postinst ()
 
     # Add firewall config
     ${SERVICETOOL} --install-configure-file --package ${FWPORTS} >> /dev/null
+
+    if [[ -f "/tmp/gogs_app.ini" ]]; then
+        mkdir -p "${INSTALL_DIR}/gogs/custom/conf"
+        mv "/tmp/gogs_app.ini" ${SETTING_FILE}
+    fi
 
     exit 0
 }
@@ -64,10 +74,18 @@ preupgrade ()
     # Stop the package
     ${SSS} stop > /dev/null
 
+    if [[ -f "${SETTING_FILE}" ]]; then
+        cp "${SETTING_FILE}" /tmp/gogs_app.ini
+    fi
+
     exit 0
 }
 
 postupgrade ()
 {
+    if [[ -f "/tmp/gogs_app.ini" ]]; then
+        mkdir -p "${INSTALL_DIR}/gogs/custom/conf"
+        mv "/tmp/gogs_app.ini" ${SETTING_FILE}
+    fi
     exit 0
 }
