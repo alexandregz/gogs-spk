@@ -14,7 +14,21 @@ FWPORTS="/var/packages/${DNAME}/scripts/${PACKAGE}.sc"
 FILE_CREATE_LOG="${INSTALL_DIR}/gogs/wizard_create_log"
 LOG_FILE="/var/log/gogs.log"
 
+CONF_DIR="${INSTALL_DIR}/gogs/custom/conf"
+
 SETTING_FILE="${INSTALL_DIR}/gogs/custom/conf/app.ini"
+
+BACKUP_DIR="/tmp/gogs_backup"
+
+BACKUP_GITIG="${BACKUP_DIR}/gitignore"
+BACKUP_LABEL="${BACKUP_DIR}/label"
+BACKUP_LICENSE="${BACKUP_DIR}/license"
+BACKUP_README="${BACKUP_DIR}/readme"
+
+LABEL_DIR="${CONF_DIR}/label"
+LICENSE_DIR="${CONF_DIR}/license"
+GITIGNORE_DIR="${CONF_DIR}/gitignore"
+README_DIR="${CONF_DIR}/readme"
 
 preinst ()
 {
@@ -42,6 +56,22 @@ postinst ()
         mv "/tmp/gogs_app.ini" ${SETTING_FILE}
     fi
 
+    if [[ -d "${BACKUP_LABEL}" ]]; then
+        cp -R "${BACKUP_LABEL}" "${CONF_DIR}"
+    fi
+
+    if [[ -d "${BACKUP_GITIG}" ]]; then
+        cp -R "${BACKUP_GITIG}" "${CONF_DIR}"
+    fi
+
+    if [[ -d "${BACKUP_LICENSE}" ]]; then
+        cp -R "${BACKUP_LICENSE}" "${CONF_DIR}"
+    fi
+
+    if [[ -d "${BACKUP_README}" ]]; then
+        cp -R "${BACKUP_README}" "${CONF_DIR}"
+    fi
+
     exit 0
 }
 
@@ -66,6 +96,7 @@ postuninst ()
     # remove log file
     rm -f ${LOG_FILE}
 
+    rm -R "${BACKUP_DIR}"
     exit 0
 }
 
@@ -78,6 +109,30 @@ preupgrade ()
         cp "${SETTING_FILE}" /tmp/gogs_app.ini
     fi
 
+    if [[ ! -d "${BACKUP_DIR}" ]]; then
+        mkdir "${BACKUP_DIR}"
+    fi
+
+    #Label
+    if [[ -d "${LABEL_DIR}" ]]; then
+        cp -R "${LABEL_DIR}" "${BACKUP_DIR}"
+    fi
+      
+    #gitignore
+    if [[ -d "${GITIGNORE_DIR}" ]]; then
+        cp -R "${GITIGNORE_DIR}" "${BACKUP_DIR}"
+    fi
+    
+    #license
+    if [[ -d "${LICENSE_DIR}" ]]; then
+        cp -R "${LICENSE_DIR}" "${BACKUP_DIR}"
+    fi
+
+    #readme
+    if [[ -d "${README_DIR}" ]]; then
+        cp -R "${README_DIR}" "${BACKUP_DIR}"
+    fi
+
     exit 0
 }
 
@@ -87,5 +142,22 @@ postupgrade ()
         mkdir -p "${INSTALL_DIR}/gogs/custom/conf"
         mv "/tmp/gogs_app.ini" ${SETTING_FILE}
     fi
+    if [[ -d "${BACKUP_LABEL}" ]]; then
+        cp -R "${BACKUP_LABEL}" "${CONF_DIR}"
+    fi
+
+    if [[ -d "${BACKUP_GITIG}" ]]; then
+        cp -R "${BACKUP_GITIG}" "${CONF_DIR}"
+    fi
+
+    if [[ -d "${BACKUP_LICENSE}" ]]; then
+        cp -R "${BACKUP_LICENSE}" "${CONF_DIR}"
+    fi
+
+    if [[ -d "${BACKUP_README}" ]]; then
+        cp -R "${BACKUP_README}" "${CONF_DIR}"
+    fi
+
+
     exit 0
 }
