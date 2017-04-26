@@ -9,7 +9,9 @@ Install Gogs into a Synology NAS.
 <sub>this package, to see Gogs requirements check https://gogs.io</sub>
 
 * armv7 (Tested only with DS213j, Marvell Armada 370)
-* MariaDB
+* intel Atom D2700 (RS2414rp+)
+* intel Atom CE5335 (DS214 play)
+* MariaDB, SQLite
 * Git Server
 
 ## Usage
